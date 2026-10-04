@@ -5,6 +5,7 @@
 
 import { v4 as uuidv4 } from "uuid";
 import zlib from "zlib";
+import { BRAND } from "../config/brand.js";
 
 const DEBUG = process.env.CURSOR_PROTOBUF_DEBUG === "1";
 const log = (tag, ...args) => DEBUG && console.log(`[PROTOBUF:${tag}]`, ...args);
@@ -1013,7 +1014,7 @@ export function encodeMcpToolDefinition(tool) {
     encodeField(MTD_NAME, WIRE_TYPE.LEN, name),
     encodeField(MTD_DESCRIPTION, WIRE_TYPE.LEN, description),
     encodeField(MTD_INPUT_SCHEMA, WIRE_TYPE.LEN, encodeAgentValue(schema)),
-    encodeField(MTD_PROVIDER, WIRE_TYPE.LEN, "9router"),
+    encodeField(MTD_PROVIDER, WIRE_TYPE.LEN, BRAND.slug),
     encodeField(MTD_TOOL_NAME, WIRE_TYPE.LEN, name),
   );
 }

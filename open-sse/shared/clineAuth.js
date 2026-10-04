@@ -30,7 +30,7 @@ export function buildClineHeaders(token, extraHeaders = {}) {
     "User-Agent": `${BRAND.name}/${APP_VERSION}`,
     "X-PLATFORM": process.platform || "unknown",
     "X-PLATFORM-VERSION": process.version || "unknown",
-    "X-CLIENT-TYPE": "9router",
+    "X-CLIENT-TYPE": BRAND.slug,
     "X-CLIENT-VERSION": APP_VERSION,
     "X-CORE-VERSION": APP_VERSION,
     "X-IS-MULTIROOT": "false",

@@ -4,11 +4,8 @@
 
 - **Free providers only.** The dashboard, management APIs and routing only expose providers with a free offer (Kiro, OpenCode Free, OpenRouter free models, NVIDIA NIM, Groq, Cloudflare Workers AI, Ollama, self-hosted servers and more).
 - **A Models screen instead of a provider list.** Every model from every free provider in one searchable table, with a ready/connect status and a one-click test.
-- **Your own model names.** Publish a model under your name — `GPT-6 Astra` is served by OpenCode's Big Pickle behind the scenes, and clients never see the upstream name.
 - **One place to rename.** Product name, CLI command, data folder, the prefix your tools show on models, and the provider policy all live in [`brand.json`](brand.json).
 - **Starts with one command.** Running `flagshiprouter` starts the server and opens the browser UI.
-
-FlagshipRouter is a rebrand of [9router](https://github.com/decolua/9router) (MIT) and keeps its routing engine: format translation, combo fallback, multi-account rotation, token saver (RTK), usage tracking and MITM integrations.
 
 ## Quick start
 
@@ -61,22 +58,10 @@ curl http://localhost:20128/v1/chat/completions \
 | `tagline`, `description` | Page title, web app manifest |
 | `repository`, `branch` | Links, changelog and agent-skill URLs |
 | `updateCheck` | npm update notices (keep `false` until the package is published under `slug`) |
-| `models.renames` | Public model names (see below) |
 | `providers` | Free-provider policy (see below) |
 
 After editing `brand.json`, run `npm run brand:sync` to update the two `package.json` files (package name, CLI bin). Everything else reads `brand.json` at runtime or build time.
 
-## Model renames
-
-```json
-"models": {
-  "renames": [
-    { "id": "gpt-6-astra", "name": "GPT-6 Astra", "target": "oc/big-pickle", "hideTarget": true }
-  ]
-}
-```
-
-Clients list and call `gpt-6-astra` (or `GPT-6 Astra`). The router sends the request to `target` (`provider-alias/model`), and rewrites the model field in every JSON and streaming response — OpenAI, Anthropic, Responses and Gemini formats — back to the public name. Upstream persona names and upstream model names in error messages are removed too. With `hideTarget`, the upstream model is left out of `/v1/models` and the Models screen. Renamed models also work inside combos.
 
 ## Free-provider policy
 
@@ -101,8 +86,8 @@ Endpoint & Key · Models · Combos & Vision · Token Saver · CLI Tools · Media
 
 | Path | What it is |
 | --- | --- |
-| `brand.json` | Single source for brand, model renames and provider policy |
-| `open-sse/` | Routing and translation engine (`config/brand.js`, `providers/policy.js`, `services/modelRenames.js`) |
+| `brand.json` | Single source for brand and provider policy |
+| `open-sse/` | Routing and translation engine (`config/brand.js`, `providers/policy.js`) |
 | `src/app/` | Next.js dashboard and API routes (`/v1/*` gateway, `/api/models/catalog` for the Models screen) |
 | `cli/` | The `flagshiprouter` launcher: starts the server, opens the browser UI, terminal UI, tray |
 | `tests/` | Vitest suite (`tests/unit/brand-policy.test.js` covers the brand layer) |
@@ -116,8 +101,8 @@ ln -sfn /tmp/vitest-runner/node_modules tests/node_modules
 cd tests && npx vitest run
 ```
 
-The upstream suite carries known failures (live-provider tests, a missing `cloud/` worker, timing-sensitive DB tests); compare against upstream rather than expecting all green. Engine tests run with the free-only policy disabled by `tests/setup/providerPolicy.js`.
+The suite carries known failures (live-provider tests, a missing `cloud/` worker, timing-sensitive DB tests); compare against a run on the previous commit rather than expecting all green. Engine tests run with the free-only policy disabled by `tests/setup/providerPolicy.js`.
 
-## Credits and license
+## License
 
-Built on [9router](https://github.com/decolua/9router) by decolua and contributors. Released under the [MIT License](LICENSE); the original copyright notice is retained.
+Released under the [MIT License](LICENSE).

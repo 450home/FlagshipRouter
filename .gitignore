@@ -89,7 +89,7 @@ graphify-out/*
 
 # Kiro local workspace state
 .kiro/
-9router-*
+flagshiprouter-*
 /flagshiprouter-*.tgz
 
 # Local sensitive / temp files

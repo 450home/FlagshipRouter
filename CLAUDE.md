@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-FlagshipRouter (`flagshiprouter-app`) — a rebrand of 9router: a local AI routing gateway + Next.js dashboard. It exposes one OpenAI-compatible endpoint (`/v1/*`) and routes traffic to **free** upstream providers with format translation, model-combo fallback, multi-account fallback, OAuth/API-key credential management, token refresh and usage tracking. `upstream` remote = decolua/9router.
+FlagshipRouter (`flagshiprouter-app`) — a local AI routing gateway + Next.js dashboard. It exposes one OpenAI-compatible endpoint (`/v1/*`) and routes traffic to **free** upstream providers with format translation, model-combo fallback, multi-account fallback, OAuth/API-key credential management, token refresh and usage tracking.
 
 Two published artifacts live in this one repo:
 - The **dashboard + gateway** (root `package.json`, `flagshiprouter-app`) — the Next.js server that does the actual routing.
@@ -15,7 +15,7 @@ Two published artifacts live in this one repo:
 - `npm run brand:sync` (scripts/brand-sync.mjs) stamps brand.json into both package.json files; `cli/scripts/build-cli.js` runs it and ships a copy of brand.json.
 - Free-only policy: `open-sse/providers/policy.js` (`isProviderAllowed`, `ALLOWED_REGISTRY`). Enforced in `src/shared/constants/providers.js` (dashboard + management APIs), `createProviderConnection` (connection store), `getProviderCredentials` and the chat handler (routing). The engine registry itself stays complete.
 - Model renames: `open-sse/services/modelRenames.js`. `getModelInfo` resolves public ids to targets; `handleSingleModelChat` wraps the response with `presentResponseAsModel`; `/v1/models` and `/api/models/catalog` list renames and hide targets.
-- Kept on purpose: upstream wire identifiers (Kimi `X-Msh-Platform`, Cline `X-CLIENT-TYPE`, Cursor MCP provider tag), the MITM encryption salt, the pinned upstream tray-binary URL, internal `x-9r-*` headers and `NINEROUTER_*` env vars.
+- Internal plumbing names: `x-fr-*` headers (custom-server ↔ app), `FLAGSHIPROUTER_*` env vars.
 - UI: new shell in `src/shared/components/Sidebar.js` / `Header.js` / `BrandMark.js`, tokens in `src/app/globals.css`; the Models screen (`src/app/(dashboard)/dashboard/models/page.js`) replaces the provider list (`/dashboard/providers` redirects unless custom endpoints are enabled).
 - Tests: `tests/setup/providerPolicy.js` disables the free-only policy for upstream engine tests; `tests/unit/brand-policy.test.js` covers the brand layer with the real policy.
 

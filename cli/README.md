@@ -19,4 +19,4 @@ Starts the router on `http://localhost:20128`, opens the browser UI, and keeps a
 
 Data lives in `~/.flagshiprouter/` (macOS/Linux) or `%APPDATA%\flagshiprouter\` (Windows); set `DATA_DIR` to move it.
 
-The product name, command name and data folder come from `brand.json` in the repository. Based on [9router](https://github.com/decolua/9router) (MIT).
+The product name, command name and data folder come from `brand.json` in the repository.
